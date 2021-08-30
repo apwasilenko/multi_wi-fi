@@ -116,6 +116,49 @@ void loop() {
     if (WiFi.status() == WL_IDLE_STATUS) Serial.printf("%d – WiFi-сеть переключается с одного статуса на другой\n", WiFi.status());
     if (WiFi.status() == WL_DISCONNECTED) Serial.printf("%d – модуль не находится в режиме станции\n", WiFi.status());
   }
+/*
+ *
+   int n = WiFi.scanNetworks();
+  int id_wi_fi;
+  int maxrssi = -200;
+  for (int i = 0; i < sizeof(wifidata) / sizeof(wifidata[0]);i++){
+   Serial.printf("Зарегестрирована сеть - |%s| пароль |%s|\n", wifidata[i][0],wifidata[i][1]);
+  }
+  Serial.println();
+  if (n > 0){
+  for (int i = 0; i < n; i++){
+       Serial.printf("%d: %s, Ch:%d (%ddBm) %s\n", i+1, WiFi.SSID(i).c_str(), WiFi.channel(i), WiFi.RSSI(i), WiFi.encryptionType(i) == ENC_TYPE_NONE ? "open" : "close");
+      for (int j = 0; j <  sizeof(wifidata) / sizeof(wifidata[0]); j++){
+           Serial.printf("Сверяем сеть |%s| c сетью |%s|\n",wifidata[j][0], WiFi.SSID(i).c_str());
+
+        if (wifidata[j][0] == WiFi.SSID(i).c_str()) {
+          if (maxrssi < WiFi.RSSI(i)){
+            Serial.printf("\n\nНайдена лучшая сеть %dbBm заместо прежней %ddBm\n\n", WiFi.RSSI(i), maxrssi);
+            id_wi_fi = j;
+            maxrssi = WiFi.RSSI(i);            
+          }
+          Serial.printf("\n\n Найдена объявленная сеть \n\n");
+        }
+      }
+    }
+    if (id_wi_fi >= 0){
+      Serial.printf("\n\n Подключаемся к сети номер %d с именем %s \n\n", id_wi_fi, wifidata[id_wi_fi][0]);    
+      WiFi.begin(wifidata[id_wi_fi][0], wifidata[id_wi_fi][1]);
+      while (WiFi.waitForConnectResult() != WL_CONNECTED) {
+        delay(1000);
+        ESP.restart();
+      }
+      Serial.print(" IP address: ");
+      Serial.println(WiFi.localIP());
+      Serial.println(WiFi.hostname());  
+    }
+ }
+ else {
+  Serial.printf("/n Нет сетей\n");
+ }
+ *
+ * /
+  
   ArduinoOTA.handle(); // Всегда готовы к прошивке
   HTTP.handleClient(); // Запускаем HTTP сервер
   ftpSrv.handleFTP();  // Запускаем FTP сервер

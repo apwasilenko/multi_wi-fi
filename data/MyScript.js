@@ -2,7 +2,7 @@ var relay = document.getElementById("relay_button");
 var mytext1 = document.getElementById("txt1");
 var mytext2 = document.getElementById("txt2");
 var relay_status = 0;
-let interwal = 10000;
+let interwal = 1000;
 
 function relay_state() {
 	var request = new XMLHttpRequest();
@@ -18,9 +18,11 @@ function relay_state() {
 		}
 	}
 	request.send();
+	myAllert();
 }
 
 function relay_inverse() {
+	myAllert();
 	var request = new XMLHttpRequest();
 	request.open('GET', './relay_switch', false);
 	request.send();
@@ -73,4 +75,4 @@ function convertTime(newTime){
 document.addEventListener('DOMContentLoaded', relay_state);
 relay.addEventListener('click', relay_inverse);
 	
-setInterval(myAllert, interwal);
+setInterval(myAllert(), interwal);

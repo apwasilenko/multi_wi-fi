@@ -101,8 +101,6 @@ void setup(){
  else {
   Serial.printf("/n Нет сетей\n");
  }
-
-  
 }
 
 
@@ -148,12 +146,12 @@ void loop() {
       }
     }
     else {
-      Serial.printf("/n Нет сетей\n");
+        Serial.printf("/n Нет сетей\n");
+      }
     }
-  }
-  ArduinoOTA.handle(); // Всегда готовы к прошивке
-  HTTP.handleClient(); // Запускаем HTTP сервер
-  ftpSrv.handleFTP();  // Запускаем FTP сервер
+    ArduinoOTA.handle(); // Всегда готовы к прошивке
+    HTTP.handleClient(); // Запускаем HTTP сервер
+    ftpSrv.handleFTP();  // Запускаем FTP сервер
 }
 String mytime(){     //Функция чтения времени с сайта
  // wait for WiFi connection
@@ -196,7 +194,8 @@ String mytime(){     //Функция чтения времени с сайта
       Serial.printf("[HTTP} Unable to connect\n");
       return "Нет данных";
     }
-  } 
+  }
+  
 }
 
 String relay_switch(){     //Функция переключения реле
@@ -220,7 +219,7 @@ String relay_status(){     //Функция определения состоя�
 
 bool handleFileRead(String path){                     //Функция работы с файловой системой
   if (path.endsWith("/")) path += "index.html";       //Если устройство вызывает корень
-  String contentType = getContentType(path);          //С помощью функции getContentType определяем заголовок 
+String contentType = getContentType(path);            //С помощью функции getContentType определяем заголовок 
   if (SPIFFS.exists(path)) {                          //Если в файловой системе существует заархивированный или простой 
     File file = SPIFFS.open(path, "r");               //Открываем файл для чтения
     size_t sent = HTTP.streamFile(file, contentType); //Выводим содержимое файла по HTTP,

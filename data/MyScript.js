@@ -2,12 +2,10 @@ var relay = document.getElementById("relay_button");
 var mytext1 = document.getElementById("txt1");
 var mytext2 = document.getElementById("txt2");
 var relay_status = 0;
-let interwal = 1000;
+let interval = 1000;
 document.addEventListener('DOMContentLoaded', relay_state);
-
 relay.addEventListener('click', relay_inverse);
-	
-setInterval(myAllert(), interwal);
+setInterval(myAllert, interval);
 
 function relay_state() {
 	var request = new XMLHttpRequest();
@@ -60,21 +58,27 @@ function myAllert(){
 		let b = `<p class=".my_Text1">${convertTime(a)}</p>`;
 		mytext1.innerHTML = b;
 		mytext2.innerHTML = `<p class='.my_Text2'>${nm_work}</p>`;
-		alert("myAlert");
 	}
 }
 
 function convertTime(newTime){
-	let my_day  = Math.floor(newTime / 1000 / 60 / 60 / 24)
-	let my_hour = Math.floor((newTime - / 1000 / 60 / 60);
-	let my_min  = Math.floor((newTime - my_hour * 1000 * 60 * 60) / 1000 / 60);
-	let my_sec  = Math.floor((newTime - my_hour * 1000 * 60 * 60 - my_min * 1000 * 60) / 1000);
 	let fulltime ="";
-	fulltime += 
+//	fulltime += newTime;
+//	fulltime += " <--> ";
+	let my_milsec  = newTime - Math.floor(newTime / 1000 ) * 1000;
+	newTime = (newTime - my_milsec) / 1000;//переходим на секунды
+	let my_sec = newTime - Math.floor(newTime / 60) * 60;
+	newTime = (newTime - my_sec) / 60;//переходим на минуты
+	let my_min = newTime - Math.floor(newTime / 60) * 60;
+	newTime = (newTime - my_min) / 60;//переходим на часы
+	let my_hour = newTime - Math.floor(newTime / 24) * 24;
 	fulltime += my_hour;
-	fulltime += ":";
+	fulltime += ":";	
 	fulltime += my_min;
-  fulltime += ":";
+	fulltime += ":";
 	fulltime += my_sec;
+	fulltime += ",";
+	fulltime += my_milsec;
+	interval =	1000 - my_milsec;
 	return fulltime;
 }

@@ -183,7 +183,7 @@ String mytime(){     //Функция чтения времени с сайта
           time = millis(); //выводит время прошедшее с момента начала выполнения программы
           Serial.println(time);
 
-          return payload;
+          return payload.substring(8,21);
         }
       } else {
         Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
